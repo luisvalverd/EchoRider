@@ -1,6 +1,4 @@
-import { ServerResponse } from "http";
-
-interface ResponseInterface extends ServerResponse {
+interface ResponseInterface {
   send(msj: string): void;
   json(): void;
 }

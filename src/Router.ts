@@ -1,23 +1,28 @@
 import { EventEmitter } from "events";
-import { IncomingMessage, ServerResponse } from "http";
 import Response from "./Response";
+import Request from "./Request";
+import Hanlder from "./utils/types/Hanlder.type";
 import Methods from "./utils/Methods";
 
+/**
+ * TODO: change IncomingMessage to Request class
+ * TODO: change ServerResponse to Response class
+ */
+
 class Router extends EventEmitter {
-  protected routes: Map<string, Map<string, any>>;
-  protected route: Map<string, any>;
+  protected routes: Map<string, Map<string, Hanlder<Request, Response>>>;
 
   constructor() {
     super();
-    this.routes = new Map<string, Map<string, any>>();
-    // initialization of methods
+    this.routes = new Map<string, Map<string, Hanlder<Request, Response>>>();
     this.initializationRoutes();
   }
 
   /**
    * put methods http in router
+   * @return void
    */
-  private initializationRoutes = () => {
+  private initializationRoutes = (): void => {
     for (let method in Methods) {
       this.routes.set(method, new Map());
     }
@@ -25,10 +30,14 @@ class Router extends EventEmitter {
 
   /**
    * the function match get handler of route
+   * * find if not exist method in Router
+   * *    before find url exist
+   * *    before return hanlder of the route
+   * *    if not exist method or url return null
    * @method request
    * @return handler
    */
-  public match = (request: IncomingMessage) => {
+  public match = (request: Request) => {
     const { url, method } = request;
 
     console.log(method, "-", url);
@@ -36,32 +45,40 @@ class Router extends EventEmitter {
     let handlers = this.routes.get(method!);
 
     if (!handlers) {
-      this.emit("error", new Error("error in find method"));
+      //this.emit("error", new Error("error in find method"));
       return null;
     }
 
     let handler = handlers.get(url!);
 
     if (!handler) {
-      this.emit("error", new Error("Error in find route"));
-      return null;
+      try {
+        // pass
+      } catch (err) {
+        //this.emit("error", new Error("Error in find route"));
+        return null;
+      }
     }
 
     return handler;
   };
 
   /**
+   * TODO: Change place of pages defaults
    * default page 404
    */
-  notFound = (request: IncomingMessage, response: ServerResponse) => {
+  notFound = (request: Request, response: Response) => {
+    /*
     response.writeHead(404, {
-      "Content-Type": "text/plain",
+      "Content-Type": "text/html",
     });
-    response.write("Error 404");
+    response.write("<h1>Error 404</h1>");
     response.end();
+    */
+    response.send("404 Error");
   };
 
-  public handleRoute = (request: IncomingMessage, response: ServerResponse) => {
+  public handleRoute = (request: any, response: Response) => {
     const handler = this.match(request);
 
     if (handler) {
@@ -71,7 +88,12 @@ class Router extends EventEmitter {
     }
   };
 
-  public get = (url: string, handler: any): void => {
+  /**
+   * TODO: change IncomingMessage and ServerResponse
+   * @param url
+   * @param handler
+   */
+  public get = (url: string, handler: Hanlder<Request, Response>): void => {
     this.routes.get(Methods.GET.toString())!.set(url, handler);
   };
 
