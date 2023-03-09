@@ -4,7 +4,9 @@
   "description": "framework web server",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon --watch **/*.ts --exec ts-node index.ts"
+    "dev": "nodemon --watch **/*.ts --exec ts-node index.ts",
+    "test": "jest --silent",
+    "test-dev": "jest"
   },
   "author": "",
   "license": "ISC",

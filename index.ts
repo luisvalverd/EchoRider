@@ -20,7 +20,7 @@ router.get("/", (request: Request, response: Response) => {
   response.write("home page");
   response.end();
   */
-  response.send("hola mundo");
+  return response.send("hola mundo");
 });
 
 /*

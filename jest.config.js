@@ -1,9 +1,9 @@
-const root_dir = __dirname + "./src";
+const root_dir = __dirname;
 
 module.exports = {
   roots: [root_dir],
   verbose: true,
-  testMatch: ["**/tests/**/*.spec.ts"],
+  testMatch: ["**/__tests__/**/*.spec.ts"],
   transform: {
     "^.+\\.ts?$": "ts-jest",
   },

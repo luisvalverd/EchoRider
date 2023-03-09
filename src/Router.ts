@@ -45,18 +45,20 @@ class Router extends EventEmitter {
     let handlers = this.routes.get(method!);
 
     if (!handlers) {
+      // todo fix the bug
       //this.emit("error", new Error("error in find method"));
       return null;
     }
 
-    let handler = handlers.get(url!);
+    let handler: Hanlder<Request, Response> = handlers.get(url!)!;
 
     if (!handler) {
       try {
         // pass
-      } catch (err) {
-        //this.emit("error", new Error("Error in find route"));
+        this.emit("error", new Error("Error in find route"));
         return null;
+      } catch (err: any) {
+        new Error(err.msg);
       }
     }
 
@@ -75,7 +77,7 @@ class Router extends EventEmitter {
     response.write("<h1>Error 404</h1>");
     response.end();
     */
-    response.send("404 Error");
+    return response.send("404 Error");
   };
 
   public handleRoute = (request: any, response: Response) => {
@@ -97,23 +99,23 @@ class Router extends EventEmitter {
     this.routes.get(Methods.GET.toString())!.set(url, handler);
   };
 
-  public post = (url: string, handler: any): void => {
+  public post = (url: string, handler: Hanlder<Request, Response>): void => {
     this.routes.get(Methods.POST.toString())!.set(url, handler);
   };
 
-  public delete = (url: string, handler: any): void => {
+  public delete = (url: string, handler: Hanlder<Request, Response>): void => {
     this.routes.get(Methods.DELETE.toString())!.set(url, handler);
   };
 
-  public update = (url: string, handler: any): void => {
+  public update = (url: string, handler: Hanlder<Request, Response>): void => {
     this.routes.get(Methods.UPDATE.toString())!.set(url, handler);
   };
 
-  public put = (url: string, handler: any): void => {
+  public put = (url: string, handler: Hanlder<Request, Response>): void => {
     this.routes.get(Methods.PUT.toString())!.set(url, handler);
   };
 
-  public patch = (url: string, handler: any): void => {
+  public patch = (url: string, handler: Hanlder<Request, Response>): void => {
     this.routes.get(Methods.PATCH.toString())!.set(url, handler);
   };
 }
