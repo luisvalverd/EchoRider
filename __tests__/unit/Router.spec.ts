@@ -84,4 +84,28 @@ describe("Router", () => {
 
     expect("function").toBe(typeof router.match(req));
   });
+
+  test("add sub route in router", () => {
+    let router = new Router();
+    let sub_router = new Router();
+
+    sub_router.get("/sub_route", (request: Request, response: Response) => {});
+
+    expect(undefined).toBe(router.useRouter("/test", sub_router));
+  });
+
+  test("find sub route in router", () => {
+    let router = new Router();
+    let sub_router = new Router();
+
+    let req: any = {
+      url: "/test/sub_route",
+      method: "GET",
+    };
+
+    sub_router.get("/sub_route", (request: Request, response: Response) => {});
+    router.useRouter("/test", sub_router);
+
+    expect("function").toBe(typeof router.match(req));
+  });
 });

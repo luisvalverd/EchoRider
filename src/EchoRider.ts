@@ -18,6 +18,7 @@ export default class EchoRider {
     this.router.handleRoute(request, response);
   };
 
+  // use router
   public useRouter = (router: Router) => {
     this.router = router;
   };
@@ -36,7 +37,4 @@ export default class EchoRider {
       console.log(`server listen on ${host}:${port}`);
     });
   };
-
-  // todo close method server
-  public close = () => {};
 }
