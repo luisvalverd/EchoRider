@@ -9,7 +9,7 @@ let app = new EchoRider();
 let router = new Router();
 
 router.get("/", (request: Request, response: Response) => {
-  return response.send("hola mundo");
+  return response.send("hola mundo", 204);
 });
 
 router.get("/test", (request: Request, response: Response) => {
@@ -18,6 +18,10 @@ router.get("/test", (request: Request, response: Response) => {
 
 router.get("/test2", (request: Request, response: Response) => {
   response.send("Hello test 2");
+});
+
+router.get("/status", (request: Request, response: Response) => {
+  response.status(210).send("hola mundo");
 });
 
 /*

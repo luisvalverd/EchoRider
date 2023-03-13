@@ -21,7 +21,7 @@ export class Response extends ServerResponse {
    * @param body
    * @param status
    */
-  public send = (body: any, status?: number): void => {
+  public send = (body: any, status?: number) => {
     let chunk = body;
     let content_type = this._response.getHeader("Content-Type");
 
@@ -29,10 +29,20 @@ export class Response extends ServerResponse {
       this._setHeader("Content-Type", "html");
     }
 
+    if (status !== undefined) {
+      this._response.statusCode = status;
+    }
+
     if (chunk !== undefined) {
       chunk = Buffer.from(chunk, "utf-8");
     }
     this._response.end(chunk, "utf-8");
+    return this;
+  };
+
+  public status = (status: number) => {
+    this._response.statusCode = status;
+    return this;
   };
 
   /**
