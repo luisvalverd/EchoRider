@@ -87,12 +87,13 @@ class Router extends EventEmitter {
   };
 
   /**
+   * * this need a sub uri
    * save sub router
-   * @param url
+   * @param uri
    * @param router
    */
-  public useRouter = (url: string, router: Router) => {
-    let primary_url = url;
+  public useRouter = (uri: string, router: Router) => {
+    let primary_uri = uri;
     let sub_router = router.getRouter();
 
     if (!router) {
@@ -101,19 +102,19 @@ class Router extends EventEmitter {
     }
 
     for (let method in Methods) {
-      let arr = Array.from(sub_router[method.toString()].entries());
+      let route = Array.from(sub_router.get(method.toString())!.entries())[0]; // get with a array the map
 
-      if (arr[0] !== undefined) {
-        let sub_url = arr[0];
-        let final_url = primary_url.concat(sub_url[0]);
+      if (route !== undefined) {
+        let sub_uri = route[0]; // get path uri of sub route
+        let uri = primary_uri!.concat(sub_uri); // join uri with sub uri of route
 
-        this.routes.get(method.toString())?.set(final_url, arr[0][1]);
+        this.routes.get(method.toString())?.set(uri, route[1]);
       }
     }
   };
 
   public getRouter = () => {
-    return Object.fromEntries(Array.from(this.routes.entries()));
+    return this.routes;
   };
 
   /**

@@ -12,15 +12,21 @@ export default class EchoRider {
   }
 
   private handlerServer = (req: IncomingMessage, res: ServerResponse) => {
-    let response = new Response(res);
+    let response = new Response(req, res);
     let request = new Request(req);
 
     this.router.handleRoute(request, response);
   };
 
   // use router
-  public useRouter = (router: Router) => {
-    this.router = router;
+  public useRouter = (router: Router, url?: string) => {
+    if (!this.router) {
+      this.router = router;
+    }
+
+    if (url !== undefined && this.router !== undefined) {
+      this.router.useRouter(url, router);
+    }
   };
 
   /**
@@ -29,9 +35,8 @@ export default class EchoRider {
    * @param host
    */
   public listen = (port: number, host?: string) => {
-    let host_default;
     if (!host) {
-      host_default = "127.0.0.1";
+      host = "127.0.0.1";
     }
     this.server.listen(port, host, () => {
       console.log(`server listen on ${host}:${port}`);
