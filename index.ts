@@ -21,7 +21,7 @@ router.get("/test2", (request: Request, response: Response) => {
 });
 
 router.get("/status", (request: Request, response: Response) => {
-  response.status(210).send("hola mundo");
+  console.log(typeof response.status(210).send("hola mundo"));
 });
 
 /*
