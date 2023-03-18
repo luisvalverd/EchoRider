@@ -29,6 +29,9 @@ export default class EchoRider {
     }
   };
 
+  // TODO: add middleware handler
+  public use = (req: Request, response: Response, next: any) => {};
+
   /**
    * * function to listen server
    * @param port

@@ -23,4 +23,22 @@ describe("Response", () => {
     let MockResponse = new Response({} as any, res);
     expect(typeof MockResponse.json({ hello: "world" })).toBe("object");
   });
+  // test opstions
+  test("options return object", () => {
+    let res = new ServerResponse({} as any);
+    let MockResponse = new Response({} as any, res);
+    expect(typeof MockResponse.options({})).toBe("object");
+  });
+  test("options change status and header default", () => {
+    let res = new ServerResponse({} as any);
+    let MockResponse = new Response({} as any, res);
+    MockResponse.options({
+      status: 300,
+      headers: {
+        "Content-Type": "json",
+      },
+    });
+    expect(MockResponse.getStatus()).toBe(300);
+    expect(MockResponse.getHeader("Content-Type")).toBe("application/json");
+  });
 });

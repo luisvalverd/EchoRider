@@ -36,6 +36,10 @@ export class Response extends ServerResponse {
     let chunk = body;
     let content_type = this._response.getHeader("Content-Type");
 
+    if (opts !== undefined) {
+      this.options(opts);
+    }
+
     if (content_type === undefined || content_type === "") {
       switch (typeof chunk) {
         case "string": {
@@ -85,6 +89,10 @@ export class Response extends ServerResponse {
     let chunk = body;
     let content_type = this._response.getHeader("Content-Type");
 
+    if (opts !== undefined) {
+      this.options(opts);
+    }
+
     if (content_type === undefined || content_type === "") {
       this._setHeader("Content-Type", "json");
     }
@@ -113,20 +121,6 @@ export class Response extends ServerResponse {
     return this;
   };
 
-  /**
-   * * set header
-   * @param field
-   * @param value
-   */
-  public _setHeader = (field: string, value: string) => {
-    if (field.toLowerCase() === "content-type") {
-      let val = mime.getType(value);
-      this._response.setHeader(field, <string>val);
-      return;
-    }
-    this._response.setHeader(field, value);
-  };
-
   public options = (opts: Options) => {
     if (opts.status !== undefined) {
       this.status(opts.status);
@@ -141,6 +135,22 @@ export class Response extends ServerResponse {
     }
 
     return this;
+  };
+
+  /**
+   * * set header
+   * @param field
+   * @param value
+   */
+  public _setHeader = (field: string, value: string) => {
+    if (field.toLowerCase() === "content-type") {
+      let val = mime.getType(value);
+      this._response.setHeader(field, <string>val);
+      this.setHeader(field, <string>val);
+      return;
+    }
+    this._response.setHeader(field, value);
+    this.setHeader(field, value);
   };
 
   public getStatus = () => {
