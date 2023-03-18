@@ -1,4 +1,4 @@
-import Router from "./src/Router";
+import Router from "./src/router/Router";
 import Response from "./src/Response";
 import Request from "./src/Request";
 import EchoRider from "./src/EchoRider";

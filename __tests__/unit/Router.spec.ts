@@ -1,4 +1,4 @@
-import Router from "../../src/Router";
+import Router from "../../src/router/Router";
 import Request from "../../src/Request";
 import Response from "../../src/Response";
 
@@ -16,7 +16,7 @@ describe("Router", () => {
       url: "/test",
       method: "GET",
     };
-    expect(null || "undefined").toBe(typeof router.match(req));
+    expect(router.match(req)).toBe(null);
   });
 
   test("add route of method get", () => {
@@ -43,7 +43,7 @@ describe("Router", () => {
 
     router.post("/test/post", (request: Request, response: Response) => {});
 
-    expect("function").toBe(typeof router.match(req));
+    expect(typeof router.match(req)).toBe("function");
   });
 
   test("add route of method put", () => {
