@@ -3,17 +3,18 @@ import Response from "../Response";
 import Request from "../Request";
 import Hanlder from "../utils/types/Hanlder.type";
 import Methods from "../utils/Methods";
+import Route from "./Route";
 
 class Router extends EventEmitter {
   /**
    * the router should a other sub route inside
    */
-  protected routes: Map<string, Map<string, Hanlder<Request, Response>>>;
+  protected routes: Map<string, Array<Route>>;
   //protected sub_router: Map<string, Router>;
 
   constructor() {
     super();
-    this.routes = new Map<string, Map<string, Hanlder<Request, Response>>>();
+    this.routes = new Map<string, Array<Route>>();
   }
 
   /**
@@ -39,14 +40,25 @@ class Router extends EventEmitter {
       return null;
     }
 
-    const handler = <Hanlder<Request, Response>>handlers.get(url);
+    let handler: Array<Hanlder<Request, Response>>;
 
-    if (!handler) {
+    for (let i = 0; i < handlers.length; i++) {
+      handler = <Array<Hanlder<Request, Response>>>(
+        (<unknown>handlers[i].getHandler(url))
+      );
+
+      if (handler !== undefined) {
+        break;
+      }
+    }
+
+    if (!handler!) {
       //this.emit("error", new Error("Error in find route"));
       return null;
     }
 
-    return handler;
+    // TODO if next has handler pass to next handler
+    return handler[0];
   };
 
   /**
@@ -130,21 +142,27 @@ class Router extends EventEmitter {
       let method_sub_route;
 
       if (sub_router.get(method.toString()) !== undefined) {
-        route = Array.from(sub_router.get(method.toString())!.entries())[0];
+        route = sub_router.get(method.toString());
 
         method_sub_route = method.toString();
       }
 
       if (route !== undefined) {
-        const sub_uri = route[0]; // get path uri of sub route
+        for (let i = 0; i < route.length; i++) {
+          const sub_uri = route[i].path; // get path uri of sub route
 
-        path = path.concat(sub_uri);
+          path = path.concat(sub_uri);
 
-        if (this.routes.get(method.toString()) !== undefined) {
-          this.routes.get(method.toString())?.set(path, route[1]);
-        } else {
-          if (method_sub_route !== undefined) {
-            this.routes.set(method_sub_route, new Map().set(path, route[1]));
+          if (this.routes.get(method.toString()) !== undefined) {
+            this.routes
+              .get(method.toString())
+              ?.push(new Route(path, route[i].stack));
+          } else {
+            if (method_sub_route !== undefined) {
+              this.routes.set(method_sub_route, [
+                new Route(path, route[i].stack),
+              ]);
+            }
           }
         }
       }
@@ -157,65 +175,66 @@ class Router extends EventEmitter {
 
   public get = (url: string, handler: Hanlder<Request, Response>): void => {
     if (!this.routes.get(Methods.GET.toString())) {
+      this.routes.set(Methods.GET.toString(), [new Route(url, [handler])]);
       return;
     }
 
-    this.routes.get(Methods.GET.toString())!.set(url, handler);
+    this.routes.get(Methods.GET.toString())?.push(new Route(url, [handler]));
 
     return;
   };
 
   public post = (url: string, handler: Hanlder<Request, Response>): void => {
     if (!this.routes.get(Methods.POST.toString())) {
-      this.routes.set(Methods.POST.toString(), new Map().set(url, handler));
+      this.routes.set(Methods.POST.toString(), [new Route(url, [handler])]);
       return;
     }
 
-    this.routes.get(Methods.POST.toString())!.set(url, handler);
+    this.routes.get(Methods.POST.toString())?.push(new Route(url, [handler]));
 
     return;
   };
 
   public delete = (url: string, handler: Hanlder<Request, Response>): void => {
     if (!this.routes.get(Methods.DELETE.toString())) {
-      this.routes.set(Methods.DELETE.toString(), new Map().set(url, handler));
+      this.routes.set(Methods.DELETE.toString(), [new Route(url, [handler])]);
       return;
     }
 
-    this.routes.get(Methods.DELETE.toString())!.set(url, handler);
+    this.routes.get(Methods.DELETE.toString())?.push(new Route(url, [handler]));
 
     return;
   };
 
   public update = (url: string, handler: Hanlder<Request, Response>): void => {
     if (!this.routes.get(Methods.UPDATE.toString())) {
-      this.routes.set(Methods.UPDATE.toString(), new Map().set(url, handler));
+      this.routes.set(Methods.UPDATE.toString(), [new Route(url, [handler])]);
       return;
     }
 
-    this.routes.get(Methods.UPDATE.toString())!.set(url, handler);
+    this.routes.get(Methods.UPDATE.toString())?.push(new Route(url, [handler]));
 
     return;
   };
 
   public put = (url: string, handler: Hanlder<Request, Response>): void => {
     if (!this.routes.get(Methods.PUT.toString())) {
-      this.routes.set(Methods.PUT.toString(), new Map().set(url, handler));
+      this.routes.set(Methods.PUT.toString(), [new Route(url, [handler])]);
       return;
     }
 
-    this.routes.get(Methods.PUT.toString())!.set(url, handler);
+    this.routes.get(Methods.PUT.toString())?.push(new Route(url, [handler]));
 
     return;
   };
 
   public patch = (url: string, handler: Hanlder<Request, Response>): void => {
     if (!this.routes.get(Methods.PATCH.toString())) {
-      this.routes.set(Methods.PATCH.toString(), new Map().set(url, handler));
+      this.routes.set(Methods.PATCH.toString(), [new Route(url, [handler])]);
       return;
     }
 
-    this.routes.get(Methods.PATCH.toString())!.set(url, handler);
+    this.routes.get(Methods.PATCH.toString())?.push(new Route(url, [handler]));
 
     return;
   };

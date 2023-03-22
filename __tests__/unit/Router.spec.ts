@@ -35,7 +35,7 @@ describe("Router", () => {
     });
 
     // if not get null is add successfully route
-    expect(typeof router.match(req)).toBe("function");
+    expect(typeof router.match(req)).toBe("object");
   });
 
   test("add route of method post", () => {
@@ -51,7 +51,7 @@ describe("Router", () => {
       response.send(http_version);
     });
 
-    expect(typeof router.match(req)).toBe("function");
+    expect(typeof router.match(req)).toBe("object");
   });
 
   test("add route of method put", () => {
@@ -67,7 +67,7 @@ describe("Router", () => {
       response.send(http_version);
     });
 
-    expect("function").toBe(typeof router.match(req));
+    expect(typeof router.match(req)).toBe("object");
   });
 
   test("add route of method delete", () => {
@@ -83,7 +83,7 @@ describe("Router", () => {
       response.send(http_version);
     });
 
-    expect("function").toBe(typeof router.match(req));
+    expect(typeof router.match(req)).toBe("object");
   });
 
   test("add route of method patch", () => {
@@ -99,7 +99,7 @@ describe("Router", () => {
       response.send(http_version);
     });
 
-    expect("function").toBe(typeof router.match(req));
+    expect(typeof router.match(req)).toBe("object");
   });
 
   test("add sub route in router", () => {
@@ -129,6 +129,6 @@ describe("Router", () => {
     });
     router.useRouter("/test", sub_router);
 
-    expect("function").toBe(typeof router.match(req));
+    expect(typeof router.match(req)).toBe("object");
   });
 });

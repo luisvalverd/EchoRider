@@ -10,4 +10,15 @@ export default class Route {
     this.path = path;
     this.stack = stack;
   }
+
+  protected getPath = () => {
+    return this.path;
+  };
+
+  public getHandler = (path: string) => {
+    if (path === this.path) {
+      return this.stack;
+    }
+    return undefined;
+  };
 }
