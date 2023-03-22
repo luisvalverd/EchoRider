@@ -3,7 +3,7 @@ interface RequestInterface {
   url: string;
   statusCode: number;
   httpVersion: string;
-  headers: Object;
+  headers: object;
 }
 
 export default RequestInterface;

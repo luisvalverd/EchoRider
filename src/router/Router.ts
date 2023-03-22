@@ -31,7 +31,7 @@ class Router extends EventEmitter {
 
     console.log(method, "-", url);
 
-    let handlers = this.routes.get(method);
+    const handlers = this.routes.get(method);
 
     if (!handlers) {
       // todo fix the bug
@@ -39,16 +39,11 @@ class Router extends EventEmitter {
       return null;
     }
 
-    let handler = handlers.get(url!)!;
+    const handler = <Hanlder<Request, Response>>handlers.get(url);
 
     if (!handler) {
-      try {
-        // pass
-        this.emit("error", new Error("Error in find route"));
-        return null;
-      } catch (err: any) {
-        new Error(err.msg);
-      }
+      //this.emit("error", new Error("Error in find route"));
+      return null;
     }
 
     return handler;
@@ -64,7 +59,7 @@ class Router extends EventEmitter {
   };
 
   // TODO: change any type
-  public handleRoute = (request: any, response: Response) => {
+  public handleRoute = (request: Request, response: Response) => {
     const handler = this.match(request);
 
     if (handler) {
@@ -122,50 +117,46 @@ class Router extends EventEmitter {
    * @param router
    */
   public useRouter = (uri: string, router: Router) => {
-    let primary_uri = uri;
-    let sub_router = router.getRouter();
+    let path = uri;
+    const sub_router = router.getRouter();
 
     if (!router) {
       this.emit("error", new Error("Error in instance Sub Router"));
       return null;
     }
 
-    for (let method in Methods) {
+    for (const method in Methods) {
       let route;
       let method_sub_route;
 
       if (sub_router.get(method.toString()) !== undefined) {
         route = Array.from(sub_router.get(method.toString())!.entries())[0];
+
         method_sub_route = method.toString();
       }
 
       if (route !== undefined) {
-        let sub_uri = route[0]; // get path uri of sub route
+        const sub_uri = route[0]; // get path uri of sub route
 
-        let uri = primary_uri!.concat(sub_uri); // join uri with sub uri of route
+        path = path.concat(sub_uri);
 
         if (this.routes.get(method.toString()) !== undefined) {
-          this.routes.get(method.toString())?.set(uri, route[1]);
+          this.routes.get(method.toString())?.set(path, route[1]);
         } else {
           if (method_sub_route !== undefined) {
-            this.routes.set(method_sub_route, new Map().set(uri, route[1]));
+            this.routes.set(method_sub_route, new Map().set(path, route[1]));
           }
         }
       }
     }
   };
 
-  public getRouter = () => {
+  private getRouter = () => {
     return this.routes;
   };
 
-  /**
-   * @param url
-   * @param handler
-   */
   public get = (url: string, handler: Hanlder<Request, Response>): void => {
     if (!this.routes.get(Methods.GET.toString())) {
-      this.routes.set(Methods.GET.toString(), new Map().set(url, handler));
       return;
     }
 

@@ -12,8 +12,8 @@ export default class EchoRider {
   }
 
   private handlerServer = (req: IncomingMessage, res: ServerResponse) => {
-    let response = new Response(req, res);
-    let request = new Request(req);
+    const response = new Response(req, res);
+    const request = new Request(req);
 
     this.router.handleRoute(request, response);
   };
@@ -30,7 +30,7 @@ export default class EchoRider {
   };
 
   // TODO: add middleware handler
-  public use = (req: Request, response: Response, next: any) => {};
+  //public use = (req: Request, response: Response, next: any) => {};
 
   /**
    * * function to listen server

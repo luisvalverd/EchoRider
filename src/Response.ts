@@ -32,9 +32,9 @@ export class Response extends ServerResponse {
    * @param body
    * @param status
    */
-  public send = (body: any, status?: number, opts?: Options) => {
+  public send = (body: string | object, status?: number, opts?: Options) => {
     let chunk = body;
-    let content_type = this._response.getHeader("Content-Type");
+    const content_type = this._response.getHeader("Content-Type");
 
     if (opts !== undefined) {
       this.options(opts);
@@ -85,9 +85,9 @@ export class Response extends ServerResponse {
    * @param opts  optional
    * @returns
    */
-  public json = (body: Object, status?: number, opts?: Options) => {
+  public json = (body: object, status?: number, opts?: Options) => {
     let chunk = body;
-    let content_type = this._response.getHeader("Content-Type");
+    const content_type = this._response.getHeader("Content-Type");
 
     if (opts !== undefined) {
       this.options(opts);
@@ -127,9 +127,9 @@ export class Response extends ServerResponse {
     }
 
     if (opts.headers !== undefined) {
-      let list_headers = Object.entries(opts.headers!);
+      const list_headers = Object.entries(opts.headers);
 
-      list_headers.forEach((header: Array<any>) => {
+      list_headers.forEach((header: Array<string>) => {
         this._setHeader(header[0], header[1]);
       });
     }
@@ -144,7 +144,7 @@ export class Response extends ServerResponse {
    */
   public _setHeader = (field: string, value: string) => {
     if (field.toLowerCase() === "content-type") {
-      let val = mime.getType(value);
+      const val = mime.getType(value);
       this._response.setHeader(field, <string>val);
       this.setHeader(field, <string>val);
       return;

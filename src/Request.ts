@@ -1,7 +1,7 @@
 import { IncomingMessage } from "http";
 import RequestInterface from "./utils/interfaces/Request.interface";
 
-class Request extends IncomingMessage {
+class Request extends IncomingMessage implements RequestInterface {
   //private _request: IncomingMessage;
   public method: string;
   public url: string;
@@ -11,10 +11,10 @@ class Request extends IncomingMessage {
   constructor(request: IncomingMessage) {
     super(request.socket);
     //this._request = request;
-    this.method = request.method!;
-    this.url = request.url!;
-    this.statusCode = request.statusCode!;
-    this.httpVersion = request.httpVersion!;
+    this.method = <string>request.method;
+    this.url = <string>request.url;
+    this.statusCode = <number>request.statusCode;
+    this.httpVersion = <string>request.httpVersion;
   }
 }
 

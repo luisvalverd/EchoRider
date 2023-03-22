@@ -2,19 +2,19 @@ export interface Options {
   status?: number;
   headers?: {
     "Content-Type"?: string;
-    "WWW-Authenticate"?: any;
+    "WWW-Authenticate"?: string;
     "Keep-Alive"?: string;
-    "Set-Cookie"?: any;
+    "Set-Cookie"?: string;
     "Access-Control-Allow-Origin"?: string;
-    "Access-Control-Allow-Credentials"?: any;
-    "Access-Control-Allow-Headers"?: any;
-    "Access-Control-Allow-Methods"?: any;
-    "Content-Encoding"?: any;
-    Cookie?: any;
-    Accept?: any;
-    Autorization?: any;
-    Connection?: any;
+    "Access-Control-Allow-Credentials"?: string;
+    "Access-Control-Allow-Headers"?: string;
+    "Access-Control-Allow-Methods"?: string;
+    "Content-Encoding"?: string;
+    Cookie?: string;
+    Accept?: string;
+    Autorization?: string;
+    Connection?: string;
   };
 }
-
+// TODO: change types headers
 // TODO: add more headers
