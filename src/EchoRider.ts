@@ -30,7 +30,11 @@ export default class EchoRider {
   };
 
   // TODO: add middleware handler
-  //public use = (req: Request, response: Response, next: any) => {};
+  /*
+  public use = (callback: Handler<Request, Response>) => {
+    this.router
+  };
+  */
 
   /**
    * * function to listen server

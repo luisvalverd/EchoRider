@@ -1,7 +1,7 @@
 import { EventEmitter } from "events";
 import Response from "../Response";
 import Request from "../Request";
-import Hanlder from "../utils/types/Hanlder.type";
+import Handler from "../utils/types/Handler.type";
 import Methods from "../utils/Methods";
 import Route from "./Route";
 
@@ -22,12 +22,12 @@ class Router extends EventEmitter {
    * * firts need what if url has a Sub Router
    * * find if not exist method in Router
    * *    before find url exist
-   * *    before return hanlder of the route
+   * *    before return Handler of the route
    * *    if not exist method or url return null
    * @method request
    * @return handler
    */
-  public match = (request: Request): Hanlder<Request, Response> | null => {
+  public match = (request: Request): Handler<Request, Response> | null => {
     const { url, method } = request;
 
     console.log(method, "-", url);
@@ -40,10 +40,10 @@ class Router extends EventEmitter {
       return null;
     }
 
-    let handler: Array<Hanlder<Request, Response>>;
+    let handler: Array<Handler<Request, Response>>;
 
     for (let i = 0; i < handlers.length; i++) {
-      handler = <Array<Hanlder<Request, Response>>>(
+      handler = <Array<Handler<Request, Response>>>(
         (<unknown>handlers[i].getHandler(url))
       );
 
@@ -87,8 +87,8 @@ class Router extends EventEmitter {
    * for each method of Methods add the paths and methods of subRoute in
    * Router.
    *
-   * For get path and handler need tranform Map<string, Hanlder> in Array
-   * when to get in index 0 the path and index 1 the hanlder of route. path
+   * For get path and handler need tranform Map<string, Handler> in Array
+   * when to get in index 0 the path and index 1 the Handler of route. path
    *
    * Router
    * {
@@ -169,72 +169,94 @@ class Router extends EventEmitter {
     }
   };
 
+  /**
+   * get all routes
+   * @returns Routes
+   */
   private getRouter = () => {
     return this.routes;
   };
 
-  public get = (url: string, handler: Hanlder<Request, Response>): void => {
+  public get = (
+    url: string,
+    handler: Array<Handler<Request, Response>>
+  ): void => {
     if (!this.routes.get(Methods.GET.toString())) {
-      this.routes.set(Methods.GET.toString(), [new Route(url, [handler])]);
+      this.routes.set(Methods.GET.toString(), [new Route(url, handler)]);
       return;
     }
 
-    this.routes.get(Methods.GET.toString())?.push(new Route(url, [handler]));
+    this.routes.get(Methods.GET.toString())?.push(new Route(url, handler));
 
     return;
   };
 
-  public post = (url: string, handler: Hanlder<Request, Response>): void => {
+  public post = (
+    url: string,
+    handler: Array<Handler<Request, Response>>
+  ): void => {
     if (!this.routes.get(Methods.POST.toString())) {
-      this.routes.set(Methods.POST.toString(), [new Route(url, [handler])]);
+      this.routes.set(Methods.POST.toString(), [new Route(url, handler)]);
       return;
     }
 
-    this.routes.get(Methods.POST.toString())?.push(new Route(url, [handler]));
+    this.routes.get(Methods.POST.toString())?.push(new Route(url, handler));
 
     return;
   };
 
-  public delete = (url: string, handler: Hanlder<Request, Response>): void => {
+  public delete = (
+    url: string,
+    handler: Array<Handler<Request, Response>>
+  ): void => {
     if (!this.routes.get(Methods.DELETE.toString())) {
-      this.routes.set(Methods.DELETE.toString(), [new Route(url, [handler])]);
+      this.routes.set(Methods.DELETE.toString(), [new Route(url, handler)]);
       return;
     }
 
-    this.routes.get(Methods.DELETE.toString())?.push(new Route(url, [handler]));
+    this.routes.get(Methods.DELETE.toString())?.push(new Route(url, handler));
 
     return;
   };
 
-  public update = (url: string, handler: Hanlder<Request, Response>): void => {
+  public update = (
+    url: string,
+    handler: Array<Handler<Request, Response>>
+  ): void => {
     if (!this.routes.get(Methods.UPDATE.toString())) {
-      this.routes.set(Methods.UPDATE.toString(), [new Route(url, [handler])]);
+      this.routes.set(Methods.UPDATE.toString(), [new Route(url, handler)]);
       return;
     }
 
-    this.routes.get(Methods.UPDATE.toString())?.push(new Route(url, [handler]));
+    this.routes.get(Methods.UPDATE.toString())?.push(new Route(url, handler));
 
     return;
   };
 
-  public put = (url: string, handler: Hanlder<Request, Response>): void => {
+  public put = (
+    url: string,
+    handler: Array<Handler<Request, Response>>
+  ): void => {
     if (!this.routes.get(Methods.PUT.toString())) {
-      this.routes.set(Methods.PUT.toString(), [new Route(url, [handler])]);
+      this.routes.set(Methods.PUT.toString(), [new Route(url, handler)]);
       return;
     }
 
-    this.routes.get(Methods.PUT.toString())?.push(new Route(url, [handler]));
+    this.routes.get(Methods.PUT.toString())?.push(new Route(url, handler));
 
     return;
   };
 
-  public patch = (url: string, handler: Hanlder<Request, Response>): void => {
+  public patch = (
+    url: string,
+    handler: Array<Handler<Request, Response>>
+  ): void => {
     if (!this.routes.get(Methods.PATCH.toString())) {
-      this.routes.set(Methods.PATCH.toString(), [new Route(url, [handler])]);
+      this.routes.set(Methods.PATCH.toString(), [new Route(url, handler)]);
       return;
     }
 
-    this.routes.get(Methods.PATCH.toString())?.push(new Route(url, [handler]));
+    this.routes.get(Methods.PATCH.toString())?.push(new Route(url, handler));
 
     return;
   };

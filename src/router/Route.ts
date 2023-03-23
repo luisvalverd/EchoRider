@@ -1,12 +1,12 @@
-import Hanlder from "../utils/types/Hanlder.type";
+import Handler from "../utils/types/Handler.type";
 import Response from "../Response";
 import Request from "../Request";
 
 export default class Route {
   public path: string;
-  public stack: Array<Hanlder<Request, Response>>;
+  public stack: Array<Handler<Request, Response>>;
 
-  constructor(path: string, stack: Array<Hanlder<Request, Response>>) {
+  constructor(path: string, stack: Array<Handler<Request, Response>>) {
     this.path = path;
     this.stack = stack;
   }
@@ -20,5 +20,9 @@ export default class Route {
       return this.stack;
     }
     return undefined;
+  };
+
+  public useMiddleware = (middleware: Handler<Request, Response>) => {
+    this.stack.push(middleware);
   };
 }
