@@ -1,4 +1,3 @@
-// TODO: change err type
-type NextFunction = (err?: string) => void;
+type NextFunction = (err: string | null) => void;
 
 export default NextFunction;

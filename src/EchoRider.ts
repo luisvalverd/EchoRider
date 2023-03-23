@@ -2,6 +2,7 @@ import { Server, ServerResponse, IncomingMessage, createServer } from "http";
 import Request from "./Request";
 import Response from "./Response";
 import Router from "./router/Router";
+import NextFunction from "./utils/types/NextFunction.type";
 
 export default class EchoRider {
   protected server: Server;

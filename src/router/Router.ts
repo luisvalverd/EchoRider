@@ -4,6 +4,7 @@ import Request from "../Request";
 import Handler from "../utils/types/Handler.type";
 import Methods from "../utils/Methods";
 import Route from "./Route";
+import NextFunction from "../utils/types/NextFunction.type";
 
 class Router extends EventEmitter {
   /**
@@ -19,15 +20,15 @@ class Router extends EventEmitter {
 
   /**
    * the function match get handler of route
-   * * firts need what if url has a Sub Router
-   * * find if not exist method in Router
-   * *    before find url exist
-   * *    before return Handler of the route
-   * *    if not exist method or url return null
+   * firts need what if url has a Sub Router
+   * find if not exist method in Router
+   * before find url exist
+   * before return Handler of the route
+   * if not exist method or url return null
    * @method request
    * @return handler
    */
-  public match = (request: Request): Handler<Request, Response> | null => {
+  public match = (request: Request) => {
     const { url, method } = request;
 
     console.log(method, "-", url);
@@ -58,7 +59,7 @@ class Router extends EventEmitter {
     }
 
     // TODO if next has handler pass to next handler
-    return handler[0];
+    return handler;
   };
 
   /**
@@ -70,15 +71,34 @@ class Router extends EventEmitter {
     return response.send("404 Error");
   };
 
-  // TODO: change any type
-  public handleRoute = (request: Request, response: Response) => {
-    const handler = this.match(request);
+  /**
+   * use hanlder of the route and match method and method
+   * @param request
+   * @param response
+   * @param next
+   */
+  public handleRoute = async (request: Request, response: Response) => {
+    const handlers: Array<Handler<Request, Response>> = this.match(request)!;
 
-    if (handler) {
-      handler(request, response);
-    } else {
+    if (!handlers || handlers.length === 0) {
       this.notFound(request, response);
     }
+
+    if (handlers !== null) {
+      if (handlers.length === 1) {
+        handlers[0](request, response);
+      }
+
+      if (handlers.length > 1) {
+        for (let handler of handlers) {
+          await handler(request, response);
+        }
+      }
+    }
+  };
+
+  public next = () => {
+    return <NextFunction>() => {};
   };
 
   /**
@@ -191,10 +211,7 @@ class Router extends EventEmitter {
     return;
   };
 
-  public post = (
-    url: string,
-    handler: Array<Handler<Request, Response>>
-  ): void => {
+  public post = (url: string, handler: Array<Handler<Request, Response>>) => {
     if (!this.routes.get(Methods.POST.toString())) {
       this.routes.set(Methods.POST.toString(), [new Route(url, handler)]);
       return;
@@ -205,10 +222,7 @@ class Router extends EventEmitter {
     return;
   };
 
-  public delete = (
-    url: string,
-    handler: Array<Handler<Request, Response>>
-  ): void => {
+  public delete = (url: string, handler: Array<Handler<Request, Response>>) => {
     if (!this.routes.get(Methods.DELETE.toString())) {
       this.routes.set(Methods.DELETE.toString(), [new Route(url, handler)]);
       return;
@@ -219,10 +233,7 @@ class Router extends EventEmitter {
     return;
   };
 
-  public update = (
-    url: string,
-    handler: Array<Handler<Request, Response>>
-  ): void => {
+  public update = (url: string, handler: Array<Handler<Request, Response>>) => {
     if (!this.routes.get(Methods.UPDATE.toString())) {
       this.routes.set(Methods.UPDATE.toString(), [new Route(url, handler)]);
       return;
@@ -233,10 +244,7 @@ class Router extends EventEmitter {
     return;
   };
 
-  public put = (
-    url: string,
-    handler: Array<Handler<Request, Response>>
-  ): void => {
+  public put = (url: string, handler: Array<Handler<Request, Response>>) => {
     if (!this.routes.get(Methods.PUT.toString())) {
       this.routes.set(Methods.PUT.toString(), [new Route(url, handler)]);
       return;
@@ -247,10 +255,7 @@ class Router extends EventEmitter {
     return;
   };
 
-  public patch = (
-    url: string,
-    handler: Array<Handler<Request, Response>>
-  ): void => {
+  public patch = (url: string, handler: Array<Handler<Request, Response>>) => {
     if (!this.routes.get(Methods.PATCH.toString())) {
       this.routes.set(Methods.PATCH.toString(), [new Route(url, handler)]);
       return;

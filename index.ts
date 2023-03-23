@@ -3,6 +3,7 @@ import Response from "./src/Response";
 import Request from "./src/Request";
 import EchoRider from "./src/EchoRider";
 import { Server, IncomingMessage, ServerResponse, request } from "http";
+import NextFunction from "./src/utils/types/NextFunction.type";
 
 let app = new EchoRider();
 
@@ -60,8 +61,16 @@ router.get("/opts", [
 let sub_router = new Router();
 
 sub_router.get("/test", [
+  (request: Request, response: Response, next?: NextFunction) => {
+    console.log("middleware func succesfully");
+    setTimeout(() => {
+      console.log("time sleep");
+      request.statusCode = 400;
+    }, 5000);
+  },
   (request: Request, response: Response) => {
-    response.send("<h1>hello sub route</h1>");
+    console.log(request.statusCode);
+    return response.send("<h1>hello sub route</h1>");
   },
 ]);
 
