@@ -1,11 +1,18 @@
 import Router from "./src/router/Router";
-import Response from "./src/Response";
-import Request from "./src/Request";
+import Response from "./src/http/Response";
+import Request from "./src/http/Request";
 import EchoRider from "./src/EchoRider";
 import { Server, IncomingMessage, ServerResponse, request } from "http";
-import NextFunction from "./src/utils/types/NextFunction.type";
+import NextFunction from "./src/utils/interfaces/NextFunction.interface";
 
 let app = new EchoRider();
+
+app.useMiddleware(
+  (request: Request, response: Response, next: NextFunction) => {
+    console.log("middleware 1");
+    next();
+  }
+);
 
 let router = new Router();
 
@@ -36,6 +43,13 @@ router.get("/status", [
   },
 ]);
 
+app.useMiddleware(
+  (request: Request, response: Response, next: NextFunction) => {
+    console.log("Middleware 2");
+    next();
+  }
+);
+
 router.get("/json", [
   (request: Request, response: Response) => {
     response.json({
@@ -61,13 +75,6 @@ router.get("/opts", [
 let sub_router = new Router();
 
 sub_router.get("/test", [
-  (request: Request, response: Response, next?: NextFunction) => {
-    console.log("middleware func succesfully");
-    setTimeout(() => {
-      console.log("time sleep");
-      request.statusCode = 400;
-    }, 5000);
-  },
   (request: Request, response: Response) => {
     console.log(request.statusCode);
     return response.send("<h1>hello sub route</h1>");

@@ -1,21 +1,27 @@
 import { Server, ServerResponse, IncomingMessage, createServer } from "http";
-import Request from "./Request";
-import Response from "./Response";
+import Request from "./http/Request";
+import Response from "./http/Response";
+import Middleware from "./Middleware";
 import Router from "./router/Router";
-import NextFunction from "./utils/types/NextFunction.type";
+import MiddlewareHandler from "./utils/types/Middleware.type";
+import NextFunction from "./utils/interfaces/NextFunction.interface";
 
 export default class EchoRider {
   protected server: Server;
   private router: Router;
+  private middlewares: Middleware;
+
   constructor() {
     // initialization creation of server
     this.server = createServer(this.handlerServer);
+    this.middlewares = new Middleware();
   }
 
   private handlerServer = (req: IncomingMessage, res: ServerResponse) => {
     const response = new Response(req, res);
     const request = new Request(req);
 
+    this.middlewares.dispatch(request, response);
     this.router.handleRoute(request, response);
   };
 
@@ -31,6 +37,11 @@ export default class EchoRider {
   };
 
   // TODO: add middleware handler
+  public useMiddleware = (
+    handler: MiddlewareHandler<Request, Response, NextFunction>
+  ) => {
+    this.middlewares.use(handler);
+  };
   /*
   public use = (callback: Handler<Request, Response>) => {
     this.router

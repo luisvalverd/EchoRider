@@ -1,5 +1,5 @@
 import { IncomingMessage } from "http";
-import RequestInterface from "./utils/interfaces/Request.interface";
+import RequestInterface from "../utils/interfaces/Request.interface";
 
 class Request extends IncomingMessage implements RequestInterface {
   //private _request: IncomingMessage;

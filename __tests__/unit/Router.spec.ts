@@ -1,6 +1,6 @@
 import Router from "../../src/router/Router";
-import Request from "../../src/Request";
-import Response from "../../src/Response";
+import Request from "../../src/http/Request";
+import Response from "../../src/http/Response";
 import { IncomingMessage } from "http";
 
 describe("Router", () => {

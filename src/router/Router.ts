@@ -1,10 +1,10 @@
 import { EventEmitter } from "events";
-import Response from "../Response";
-import Request from "../Request";
+import Response from "../http/Response";
+import Request from "../http/Request";
 import Handler from "../utils/types/Handler.type";
 import Methods from "../utils/Methods";
 import Route from "./Route";
-import NextFunction from "../utils/types/NextFunction.type";
+import NextFunction from "../utils/interfaces/NextFunction.interface";
 
 class Router extends EventEmitter {
   /**

@@ -1,7 +1,7 @@
 import { ServerResponse, IncomingMessage } from "http";
 import { Buffer } from "buffer";
 import mime from "mime";
-import { Options } from "./utils/interfaces/Options.interface";
+import { Options } from "../utils/interfaces/Options.interface";
 
 /**
  * TODO: status(int) method send to status

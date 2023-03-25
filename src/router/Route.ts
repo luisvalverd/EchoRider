@@ -1,7 +1,6 @@
 import Handler from "../utils/types/Handler.type";
-import Response from "../Response";
-import Request from "../Request";
-import NextFunction from "../utils/types/NextFunction.type";
+import Response from "../http/Response";
+import Request from "../http/Request";
 
 export default class Route {
   public path: string;
@@ -27,11 +26,7 @@ export default class Route {
     this.stack.push(middleware);
   };
 
-  public next = (err: string | undefined, index?: number) => {
-    return {
-      hanlder: this.stack[index!++],
-      index: index!++,
-      lenght: this.stack.length - 1,
-    };
+  protected dispatch = () => {
+    let index = 0;
   };
 }

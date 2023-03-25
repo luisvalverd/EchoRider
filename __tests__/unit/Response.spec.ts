@@ -1,4 +1,4 @@
-import Response from "../../src/Response";
+import Response from "../../src/http/Response";
 import { IncomingMessage, ServerResponse } from "http";
 
 describe("Response", () => {
