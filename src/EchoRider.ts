@@ -36,17 +36,15 @@ export default class EchoRider {
     }
   };
 
-  // TODO: add middleware handler
+  /**
+   * add middleware global in application
+   * @param handler
+   */
   public useMiddleware = (
     handler: MiddlewareHandler<Request, Response, NextFunction>
   ) => {
     this.middlewares.use(handler);
   };
-  /*
-  public use = (callback: Handler<Request, Response>) => {
-    this.router
-  };
-  */
 
   /**
    * * function to listen server
@@ -54,9 +52,11 @@ export default class EchoRider {
    * @param host
    */
   public listen = (port: number, host?: string) => {
+    // default host
     if (!host) {
       host = "127.0.0.1";
     }
+
     this.server.listen(port, host, () => {
       console.log(`server listen on ${host}:${port}`);
     });

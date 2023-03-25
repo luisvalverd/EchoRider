@@ -29,10 +29,12 @@ describe("Router", () => {
     req.url = "/test/get";
     req.method = "GET";
 
-    router.get("/test/get", (request: Request, response: Response) => {
-      const http_version = request.httpVersion;
-      response.send(http_version);
-    });
+    router.get("/test/get", [
+      (request: Request, response: Response) => {
+        const http_version = request.httpVersion;
+        response.send(http_version);
+      },
+    ]);
 
     // if not get null is add successfully route
     expect(typeof router.match(req)).toBe("object");
@@ -46,10 +48,12 @@ describe("Router", () => {
     req.url = "/test/post";
     req.method = "POST";
 
-    router.post("/test/post", (request: Request, response: Response) => {
-      const http_version = request.httpVersion;
-      response.send(http_version);
-    });
+    router.post("/test/post", [
+      (request: Request, response: Response) => {
+        const http_version = request.httpVersion;
+        response.send(http_version);
+      },
+    ]);
 
     expect(typeof router.match(req)).toBe("object");
   });
@@ -62,10 +66,12 @@ describe("Router", () => {
     req.url = "/test/put";
     req.method = "PUT";
 
-    router.put("/test/put", (request: Request, response: Response) => {
-      const http_version = request.httpVersion;
-      response.send(http_version);
-    });
+    router.put("/test/put", [
+      (request: Request, response: Response) => {
+        const http_version = request.httpVersion;
+        response.send(http_version);
+      },
+    ]);
 
     expect(typeof router.match(req)).toBe("object");
   });
@@ -78,10 +84,12 @@ describe("Router", () => {
     req.url = "/test/delete";
     req.method = "DELETE";
 
-    router.delete("/test/delete", (request: Request, response: Response) => {
-      const http_version = request.httpVersion;
-      response.send(http_version);
-    });
+    router.delete("/test/delete", [
+      (request: Request, response: Response) => {
+        const http_version = request.httpVersion;
+        response.send(http_version);
+      },
+    ]);
 
     expect(typeof router.match(req)).toBe("object");
   });
@@ -94,10 +102,12 @@ describe("Router", () => {
     req.url = "/test/patch";
     req.method = "PATCH";
 
-    router.patch("/test/patch", (request: Request, response: Response) => {
-      const http_version = request.httpVersion;
-      response.send(http_version);
-    });
+    router.patch("/test/patch", [
+      (request: Request, response: Response) => {
+        const http_version = request.httpVersion;
+        response.send(http_version);
+      },
+    ]);
 
     expect(typeof router.match(req)).toBe("object");
   });
@@ -106,10 +116,12 @@ describe("Router", () => {
     const router = new Router();
     const sub_router = new Router();
 
-    sub_router.get("/sub_route", (request: Request, response: Response) => {
-      const http_version = request.httpVersion;
-      response.send(http_version);
-    });
+    sub_router.get("/sub_route", [
+      (request: Request, response: Response) => {
+        const http_version = request.httpVersion;
+        response.send(http_version);
+      },
+    ]);
 
     expect(undefined).toBe(router.useRouter("/test", sub_router));
   });
@@ -123,10 +135,13 @@ describe("Router", () => {
     req.url = "/test/sub_route";
     req.method = "GET";
 
-    sub_router.get("/sub_route", (request: Request, response: Response) => {
-      const http_version = request.httpVersion;
-      response.send(http_version);
-    });
+    sub_router.get("/sub_route", [
+      (request: Request, response: Response) => {
+        const http_version = request.httpVersion;
+        response.send(http_version);
+      },
+    ]);
+
     router.useRouter("/test", sub_router);
 
     expect(typeof router.match(req)).toBe("object");

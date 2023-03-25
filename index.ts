@@ -75,6 +75,11 @@ router.get("/opts", [
 let sub_router = new Router();
 
 sub_router.get("/test", [
+  (request: Request, response: Response, next?: NextFunction) => {
+    console.log("midleware its ok");
+    request.statusCode = 400;
+    next!();
+  },
   (request: Request, response: Response) => {
     console.log(request.statusCode);
     return response.send("<h1>hello sub route</h1>");

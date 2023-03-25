@@ -3,6 +3,9 @@ import Response from "./http/Response";
 import MiddlewareHandler from "./utils/types/Middleware.type";
 import NextFunction from "./utils/interfaces/NextFunction.interface";
 
+/**
+ * this class is use to handler middlewares globals
+ */
 class Middleware {
   public stack: MiddlewareHandler<Request, Response, NextFunction>[];
 
@@ -20,13 +23,18 @@ class Middleware {
     this.stack.push(handler);
   };
 
+  /**
+   * execute middlewares of stack of middleware
+   * @param request
+   * @param response
+   */
   public dispatch = (request: Request, response: Response) => {
     let index = 0;
 
     const next: NextFunction = (err?: Error) => {
       if (err) {
         // TODO: handler error
-        console.log(err);
+        console.error(err);
         return;
       }
 

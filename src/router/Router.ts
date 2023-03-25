@@ -4,7 +4,6 @@ import Request from "../http/Request";
 import Handler from "../utils/types/Handler.type";
 import Methods from "../utils/Methods";
 import Route from "./Route";
-import NextFunction from "../utils/interfaces/NextFunction.interface";
 
 class Router extends EventEmitter {
   /**
@@ -41,18 +40,26 @@ class Router extends EventEmitter {
       return null;
     }
 
-    let handler: Array<Handler<Request, Response>>;
+    let handler: Route;
 
-    for (let i = 0; i < handlers.length; i++) {
-      handler = <Array<Handler<Request, Response>>>(
-        (<unknown>handlers[i].getHandler(url))
-      );
+    for (handler of handlers) {
+      /*
+      handler = <Array<Handler<Request, Response>>>((<unknown>handlers[i].getHandler(url)));
 
       if (handler !== undefined) {
         break;
       }
+      */
+      if (!handler) {
+        continue;
+      }
+
+      if (handler.isMatch(url)) {
+        return handler;
+      }
     }
 
+    /*
     if (!handler!) {
       //this.emit("error", new Error("Error in find route"));
       return null;
@@ -60,6 +67,8 @@ class Router extends EventEmitter {
 
     // TODO if next has handler pass to next handler
     return handler;
+    */
+    return null;
   };
 
   /**
@@ -78,27 +87,15 @@ class Router extends EventEmitter {
    * @param next
    */
   public handleRoute = async (request: Request, response: Response) => {
-    const handlers: Array<Handler<Request, Response>> = this.match(request)!;
+    const handler: Route = this.match(request)!;
 
-    if (!handlers || handlers.length === 0) {
+    if (!handler) {
       this.notFound(request, response);
     }
 
-    if (handlers !== null) {
-      if (handlers.length === 1) {
-        handlers[0](request, response);
-      }
-
-      if (handlers.length > 1) {
-        for (let handler of handlers) {
-          await handler(request, response);
-        }
-      }
+    if (handler !== null) {
+      handler.dispatch(request, response);
     }
-  };
-
-  public next = () => {
-    return <NextFunction>() => {};
   };
 
   /**

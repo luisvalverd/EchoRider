@@ -8,6 +8,9 @@ class Request extends IncomingMessage implements RequestInterface {
   public statusCode: number;
   public httpVersion: string;
 
+  /**
+   * @param request
+   */
   constructor(request: IncomingMessage) {
     super(request.socket);
     //this._request = request;
