@@ -1,7 +1,7 @@
-import Request from "./http/Request";
-import Response from "./http/Response";
-import MiddlewareHandler from "./utils/types/Middleware.type";
-import NextFunction from "./utils/interfaces/NextFunction.interface";
+import Request from "../http/Request";
+import Response from "../http/Response";
+import MiddlewareHandler from "../utils/types/Middleware.type";
+import NextFunction from "../utils/interfaces/NextFunction.interface";
 
 /**
  * this class is use to handler middlewares globals

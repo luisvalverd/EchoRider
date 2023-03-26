@@ -3,7 +3,7 @@ import Response from "../http/Response";
 import Request from "../http/Request";
 import MiddlewareHandler from "../utils/types/Middleware.type";
 import NextFunction from "../utils/interfaces/NextFunction.interface";
-import Middleware from "../Middleware";
+import Middleware from "../middlewares/Middleware";
 
 export default class Route extends Middleware {
   public path: string;

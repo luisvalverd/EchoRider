@@ -1,11 +1,11 @@
 import { Server, ServerResponse, IncomingMessage, createServer } from "http";
 import Request from "./http/Request";
 import Response from "./http/Response";
-import Middleware from "./Middleware";
+import Middleware from "./middlewares/Middleware";
 import Router from "./router/Router";
 import MiddlewareHandler from "./utils/types/Middleware.type";
 import NextFunction from "./utils/interfaces/NextFunction.interface";
-
+import parserBody from "./middlewares/ParserBody";
 export default class EchoRider {
   protected server: Server;
   private router: Router;
@@ -15,6 +15,8 @@ export default class EchoRider {
     // initialization creation of server
     this.server = createServer(this.handlerServer);
     this.middlewares = new Middleware();
+
+    this.useMiddleware(parserBody);
   }
 
   private handlerServer = (req: IncomingMessage, res: ServerResponse) => {

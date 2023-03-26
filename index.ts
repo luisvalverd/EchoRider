@@ -7,13 +7,6 @@ import NextFunction from "./src/utils/interfaces/NextFunction.interface";
 
 let app = new EchoRider();
 
-app.useMiddleware(
-  (request: Request, response: Response, next: NextFunction) => {
-    console.log("middleware 1");
-    next();
-  }
-);
-
 let router = new Router();
 
 router.get("/", [
@@ -43,13 +36,6 @@ router.get("/status", [
   },
 ]);
 
-app.useMiddleware(
-  (request: Request, response: Response, next: NextFunction) => {
-    console.log("Middleware 2");
-    next();
-  }
-);
-
 router.get("/json", [
   (request: Request, response: Response) => {
     response.json({
@@ -72,6 +58,14 @@ router.get("/opts", [
   },
 ]);
 
+router.post("/post", [
+  (request: Request, response: Response) => {
+    const body = request.body;
+
+    response.json(body);
+  },
+]);
+
 let sub_router = new Router();
 
 sub_router.get("/test", [
@@ -88,7 +82,5 @@ sub_router.get("/test", [
 
 app.useRouter(router);
 app.useRouter(sub_router, "/sub-route");
-
-app.useRouter(router);
 
 app.listen(3000);

@@ -1,11 +1,11 @@
-import { EventEmitter } from "events";
+//import { EventEmitter } from "events";
 import Response from "../http/Response";
 import Request from "../http/Request";
 import Handler from "../utils/types/Handler.type";
 import Methods from "../utils/Methods";
 import Route from "./Route";
 
-class Router extends EventEmitter {
+class Router {
   /**
    * the router should a other sub route inside
    */
@@ -13,7 +13,6 @@ class Router extends EventEmitter {
   //protected sub_router: Map<string, Router>;
 
   constructor() {
-    super();
     this.routes = new Map<string, Array<Route>>();
   }
 
@@ -43,13 +42,6 @@ class Router extends EventEmitter {
     let handler: Route;
 
     for (handler of handlers) {
-      /*
-      handler = <Array<Handler<Request, Response>>>((<unknown>handlers[i].getHandler(url)));
-
-      if (handler !== undefined) {
-        break;
-      }
-      */
       if (!handler) {
         continue;
       }
@@ -59,15 +51,6 @@ class Router extends EventEmitter {
       }
     }
 
-    /*
-    if (!handler!) {
-      //this.emit("error", new Error("Error in find route"));
-      return null;
-    }
-
-    // TODO if next has handler pass to next handler
-    return handler;
-    */
     return null;
   };
 
@@ -150,7 +133,7 @@ class Router extends EventEmitter {
     const sub_router = router.getRouter();
 
     if (!router) {
-      this.emit("error", new Error("Error in instance Sub Router"));
+      //this.emit("error", new Error("Error in instance Sub Router"));
       return null;
     }
 

@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "nodemon --watch **/*.ts --exec ts-node index.ts",
     "test": "jest --silent",
-    "test-dev": "jest"
+    "test-dev": "jest",
+    "build": "tsc"
   },
   "author": "",
   "license": "ISC",
@@ -23,6 +24,7 @@
   "dependencies": {
     "@types/jest": "^29.4.0",
     "@types/node": "^18.15.0",
+    "http-parser-js": "^0.5.8",
     "mime": "^3.0.0",
     "ts-jest": "^29.0.5"
   }

@@ -1,6 +1,6 @@
 import Request from "../../src/http/Request";
 import Response from "../../src/http/Response";
-import Middleware from "../../src/Middleware";
+import Middleware from "../../src/middlewares/Middleware";
 import NextFunction from "../../src/utils/interfaces/NextFunction.interface";
 
 /**
