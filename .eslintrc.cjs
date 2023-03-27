@@ -7,7 +7,7 @@ module.exports = {
     __dirname: true,
     module: true,
   },
-  ignorePatterns: ["index.ts"],
+  ignorePatterns: ["index.ts", "dist/**/*.js"],
   rules: {
     "@typescript-eslint/no-non-null-assertion": "off",
   },

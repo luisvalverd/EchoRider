@@ -2,6 +2,7 @@ import Request from "../../src/http/Request";
 import Response from "../../src/http/Response";
 import Middleware from "../../src/middlewares/Middleware";
 import NextFunction from "../../src/utils/interfaces/NextFunction.interface";
+import MiddlewareHandler from "../../src/utils/types/Middleware.type";
 
 /**
  * TODO: implementate this format in Response and router
@@ -26,7 +27,9 @@ describe("Middeware test", () => {
 
   describe("use()", () => {
     it("Should add handler to the stack", () => {
-      middleware.use(<any>mockHandler1);
+      middleware.use(
+        <MiddlewareHandler<Request, Response, NextFunction>>mockHandler1
+      );
       expect(middleware["stack"]).toEqual([mockHandler1]);
     });
   });
@@ -81,7 +84,9 @@ describe("Middeware test", () => {
     it("Should handle errors passed to next", () => {
       const mockConsole = jest
         .spyOn(console, "error")
-        .mockImplementation(() => {});
+        .mockImplementation(() => {
+          console.log("test!");
+        });
       const mockError = new Error("test error");
       mockHandler1.mockImplementation((req, res, next) => next(mockError));
 

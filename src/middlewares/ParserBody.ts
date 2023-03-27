@@ -1,7 +1,6 @@
 import Request from "../http/Request";
 import Response from "../http/Response";
 import NextFunction from "../utils/interfaces/NextFunction.interface";
-import HttpParser from "../http/HttpParser";
 
 /**
  * ? add the body of got in body of request

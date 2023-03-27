@@ -1,4 +1,3 @@
-import Handler from "../utils/types/Handler.type";
 import Response from "../http/Response";
 import Request from "../http/Request";
 import MiddlewareHandler from "../utils/types/Middleware.type";

@@ -61,7 +61,6 @@ router.get("/opts", [
 ]);
 
 router.post("/post", [
-  <any>parserBody,
   (request: Request, response: Response) => {
     const body = request.body;
 

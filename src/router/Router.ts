@@ -7,6 +7,9 @@ import Route from "./Route";
 import MiddlewareHandler from "../utils/types/Middleware.type";
 import NextFunction from "../utils/interfaces/NextFunction.interface";
 
+/**
+ * TODO: make hanlder similar router error
+ */
 class Router {
   /**
    * the router should a other sub route inside
@@ -60,9 +63,8 @@ class Router {
    * TODO: Change place of pages defaults
    * default page 404
    */
-  notFound = (request: Request, response: Response) => {
-    response.setHeader("content-type", "html");
-    return response.send("404 Error");
+  public notFound = (request: Request, response: Response) => {
+    response.send("404 Error");
   };
 
   /**
@@ -71,10 +73,11 @@ class Router {
    * @param response
    * @param next
    */
-  public handleRoute = async (request: Request, response: Response) => {
+  public handleRoute = (request: Request, response: Response) => {
     const handler: Route = this.match(request)!;
 
     if (!handler) {
+      console.log(handler);
       this.notFound(request, response);
     }
 
@@ -132,12 +135,13 @@ class Router {
    */
   public useRouter = (uri: string, router: Router) => {
     let path = uri;
-    const sub_router = router.getRouter();
 
     if (!router) {
       //this.emit("error", new Error("Error in instance Sub Router"));
       return null;
     }
+
+    const sub_router = router.getRouter();
 
     for (const method in Methods) {
       let route;
@@ -172,6 +176,7 @@ class Router {
   };
 
   /**
+   * ? use in all routes middleware
    * for each method of Enum Methods and get routes saved
    * if not undefined for each route concat array of middlewares of to add
    * @param handlers
