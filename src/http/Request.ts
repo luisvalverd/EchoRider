@@ -1,5 +1,4 @@
 import { IncomingMessage } from "http";
-import { resolve } from "path";
 import RequestInterface from "../utils/interfaces/Request.interface";
 
 class Request extends IncomingMessage implements RequestInterface {
@@ -8,7 +7,8 @@ class Request extends IncomingMessage implements RequestInterface {
   public url: string;
   public statusCode: number;
   public httpVersion: string;
-  public body: any;
+  public body: object;
+  public query: object;
 
   /**
    * @param request
@@ -20,7 +20,7 @@ class Request extends IncomingMessage implements RequestInterface {
     this.url = <string>request.url;
     this.statusCode = <number>request.statusCode;
     this.httpVersion = <string>request.httpVersion;
-    this.body = null;
+    this.body = {};
   }
 
   public onBody = async () => {
@@ -30,14 +30,14 @@ class Request extends IncomingMessage implements RequestInterface {
     });
 
     await this.on("end", () => {
-      this.body = data;
+      this.body = JSON.parse(data);
     });
 
     return data;
   };
 
-  public setBody = (body: any) => {
-    this.body = body;
+  public setBodyJSON = (body: string) => {
+    this.body = JSON.parse(body);
   };
 }
 

@@ -4,6 +4,8 @@ import Request from "../http/Request";
 import Handler from "../utils/types/Handler.type";
 import Methods from "../utils/Methods";
 import Route from "./Route";
+import MiddlewareHandler from "../utils/types/Middleware.type";
+import NextFunction from "../utils/interfaces/NextFunction.interface";
 
 class Router {
   /**
@@ -165,6 +167,33 @@ class Router {
             }
           }
         }
+      }
+    }
+  };
+
+  /**
+   * for each method of Enum Methods and get routes saved
+   * if not undefined for each route concat array of middlewares of to add
+   * @param handlers
+   */
+  public useMiddlewareAll = (
+    handlers:
+      | MiddlewareHandler<Request, Response, NextFunction>
+      | MiddlewareHandler<Request, Response, NextFunction>[]
+  ) => {
+    for (const method in Methods) {
+      if (!method) continue;
+
+      const routes = this.routes.get(method);
+
+      if (!routes) continue;
+
+      for (const route of routes) {
+        if (!Array.isArray(handlers)) {
+          route.use(handlers);
+          continue;
+        }
+        route.stack.concat(handlers);
       }
     }
   };

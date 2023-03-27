@@ -9,12 +9,10 @@ import parserBody from "./middlewares/ParserBody";
 export default class EchoRider {
   protected server: Server;
   private router: Router;
-  private middlewares: Middleware;
 
   constructor() {
     // initialization creation of server
     this.server = createServer(this.handlerServer);
-    this.middlewares = new Middleware();
 
     this.useMiddleware(parserBody);
   }
@@ -23,7 +21,7 @@ export default class EchoRider {
     const response = new Response(req, res);
     const request = new Request(req);
 
-    this.middlewares.dispatch(request, response);
+    this.router.useMiddlewareAll(parserBody);
     this.router.handleRoute(request, response);
   };
 
@@ -40,12 +38,14 @@ export default class EchoRider {
 
   /**
    * add middleware global in application
+   * TODO: add middleware specific route using path
    * @param handler
    */
   public useMiddleware = (
-    handler: MiddlewareHandler<Request, Response, NextFunction>
+    handler: MiddlewareHandler<Request, Response, NextFunction>,
+    path?: string
   ) => {
-    this.middlewares.use(handler);
+    //this.middlewares.use(handler);
   };
 
   /**

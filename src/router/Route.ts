@@ -26,8 +26,4 @@ export default class Route extends Middleware {
   protected getPath = () => {
     return this.path;
   };
-
-  public useMiddleware = (middleware: Handler<Request, Response>) => {
-    this.stack.push(middleware);
-  };
 }

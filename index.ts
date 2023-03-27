@@ -65,8 +65,6 @@ router.post("/post", [
   (request: Request, response: Response) => {
     const body = request.body;
 
-    console.log(request);
-
     response.json(body);
   },
 ]);

@@ -5,6 +5,7 @@ import NextFunction from "../utils/interfaces/NextFunction.interface";
 
 /**
  * this class is use to handler middlewares globals
+ * ! not use this to add middleware use EchoRider.useMiddleware or Router.useMiddleware
  */
 class Middleware {
   public stack: MiddlewareHandler<Request, Response, NextFunction>[];
