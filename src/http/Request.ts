@@ -20,6 +20,7 @@ class Request extends IncomingMessage implements RequestInterface {
     this.url = <string>request.url;
     this.statusCode = <number>request.statusCode;
     this.httpVersion = <string>request.httpVersion;
+    this.body = null;
   }
 
   public onBody = async () => {
@@ -33,6 +34,10 @@ class Request extends IncomingMessage implements RequestInterface {
     });
 
     return data;
+  };
+
+  public setBody = (body: any) => {
+    this.body = body;
   };
 }
 

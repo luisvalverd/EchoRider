@@ -4,6 +4,8 @@ import Request from "./src/http/Request";
 import EchoRider from "./src/EchoRider";
 import { Server, IncomingMessage, ServerResponse, request } from "http";
 import NextFunction from "./src/utils/interfaces/NextFunction.interface";
+import parserBody from "./src/middlewares/ParserBody";
+import MiddlewareHandler from "./src/utils/types/Middleware.type";
 
 let app = new EchoRider();
 
@@ -59,8 +61,11 @@ router.get("/opts", [
 ]);
 
 router.post("/post", [
+  <any>parserBody,
   (request: Request, response: Response) => {
     const body = request.body;
+
+    console.log(request);
 
     response.json(body);
   },

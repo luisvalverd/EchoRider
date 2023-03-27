@@ -8,8 +8,8 @@ async function parserBody(
   response: Response,
   next: NextFunction
 ) {
-  request.body = await request.onBody();
-  console.log(request.body);
+  //request.body = await request.onBody();
+  request.setBody(await request.onBody());
   next();
 }
 
