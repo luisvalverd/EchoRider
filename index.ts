@@ -64,9 +64,21 @@ router.post("/post", [
   (request: Request, response: Response) => {
     const body = request.body;
 
+    console.log("send body");
+
     response.json(body);
   },
 ]);
+
+router.post("/post-2", [
+  (request: Request, response: Response) => {
+    const body = request.body;
+
+    response.json(body);
+  },
+]);
+
+router.useMiddlewareAll(parserBody);
 
 let sub_router = new Router();
 

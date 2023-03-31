@@ -20,7 +20,6 @@ class Request extends IncomingMessage implements RequestInterface {
     this.url = <string>request.url;
     this.statusCode = <number>request.statusCode;
     this.httpVersion = <string>request.httpVersion;
-    this.body = {};
   }
 
   public onBody = async () => {
@@ -29,15 +28,11 @@ class Request extends IncomingMessage implements RequestInterface {
       data += chunk;
     });
 
-    await this.on("end", () => {
+    await this._request.on("end", () => {
       this.body = JSON.parse(data);
     });
 
     return data;
-  };
-
-  public setBodyJSON = (body: string) => {
-    this.body = JSON.parse(body);
   };
 }
 

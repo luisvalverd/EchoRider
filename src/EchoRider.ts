@@ -21,7 +21,7 @@ export default class EchoRider {
     const response = new Response(req, res);
     const request = new Request(req);
 
-    this.router.useMiddlewareAll(parserBody);
+    //this.router.useMiddlewareAll(parserBody);
     this.router.handleRoute(request, response);
   };
 

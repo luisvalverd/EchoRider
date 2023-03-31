@@ -101,17 +101,16 @@ describe("Router", () => {
     });
   });
 
-  /*
   describe("useMiddlewareAll()", () => {
-     * TODO: fix the error to add in stack middlewares
     it("should add middlewares successfully", () => {
       router.get("/test", [mockHandler1]);
-      expect([mockHandler1, mockHandler2, mockHandler3]).toEqual(
+      router.useMiddlewareAll(mockHandler2);
+      router.useMiddlewareAll(mockHandler3);
+      expect([mockHandler3, mockHandler2, mockHandler1]).toEqual(
         router.match(request)?.stack
       );
     });
   });
-  */
 
   it("return a function with router methods to match", () => {
     expect("function").toEqual(typeof router.handleRoute);

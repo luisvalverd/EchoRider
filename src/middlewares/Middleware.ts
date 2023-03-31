@@ -21,7 +21,7 @@ class Middleware {
   public use = (
     handler: MiddlewareHandler<Request, Response, NextFunction>
   ) => {
-    this.stack.push(handler);
+    this.stack.unshift(handler);
   };
 
   /**

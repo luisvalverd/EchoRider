@@ -82,6 +82,7 @@ class Router {
     }
 
     if (handler !== null) {
+      console.log(handler.stack);
       handler.dispatch(request, response);
     }
   };
@@ -182,9 +183,7 @@ class Router {
    * @param handlers
    */
   public useMiddlewareAll = (
-    handlers:
-      | MiddlewareHandler<Request, Response, NextFunction>
-      | MiddlewareHandler<Request, Response, NextFunction>[]
+    handlers: MiddlewareHandler<Request, Response, NextFunction>
   ) => {
     for (const method in Methods) {
       if (!method) continue;
@@ -194,11 +193,7 @@ class Router {
       if (!routes) continue;
 
       for (const route of routes) {
-        if (!Array.isArray(handlers)) {
-          route.use(handlers);
-          continue;
-        }
-        route.stack.concat(handlers);
+        route.use(handlers);
       }
     }
   };

@@ -6,7 +6,7 @@ import Middleware from "../middlewares/Middleware";
 
 export default class Route extends Middleware {
   public path: string;
-  public stack: MiddlewareHandler<Request, Response, NextFunction>[];
+  //public stack: MiddlewareHandler<Request, Response, NextFunction>[];
 
   constructor(
     path: string,

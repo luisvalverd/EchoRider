@@ -13,7 +13,8 @@ async function parserBody(
   response: Response,
   next: NextFunction
 ) {
-  request.setBodyJSON(await request.onBody());
+  const body = await request.onBody();
+  request.body = JSON.parse(body);
   next();
 }
 
